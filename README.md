@@ -7,6 +7,7 @@
 - Images [Micropython source](https://micropython.org/download):
   - `esp32`: [firmware/ESP32_GENERIC-20240105-v1.22.1.bin](firmware/ESP32_GENERIC-20240105-v1.22.1.bin)
   - `esp32s2`: [firmware/LOLIN_S2_MINI-20240105-v1.22.1.bin](firmware/LOLIN_S2_MINI-20240105-v1.22.1.bin)
+  - `esp32c3`: [firmware/ESP32_GENERIC_C3-20240105-v1.22.1.bin](firmware/ESP32_GENERIC_C3-20240105-v1.22.1.bin)
   - `esp8266`: [firmware/ESP8266_GENERIC-20240105-v1.22.1.bin](firmware/ESP8266_GENERIC-20240105-v1.22.1.bin)
 
 - Steps:
