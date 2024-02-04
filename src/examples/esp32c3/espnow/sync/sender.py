@@ -4,7 +4,7 @@ from src.common.led import Led
 from src.common.wifi import EspNow
 
 
-devices = {b"H'\xe2^E\x8c", b"H'\xe2^E\x1e"}
+devices = {b"\xec\xda;\xbe\xd3\x08", b"\xec\xda;\xbf\x8f\xac"}
 
 e = EspNow()
 
@@ -15,7 +15,7 @@ peers = list(devices)
 
 e.register_peers(peers=peers)
 
-led = Led(pin=15)
+led = Led(pin=8, on_value=0, off_value=1)
 while True:
     sent: {} = e.send(message=b'hi there :)', peers=peers, sync=True)
     if all([sent[p] for p in peers]):

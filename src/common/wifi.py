@@ -1,6 +1,6 @@
 import espnow
 import network
-import ubinascii
+import aioespnow
 
 from src.common import secrets
 from utime import sleep, ticks_ms, ticks_diff
@@ -39,8 +39,16 @@ class WiFi:
     def reconnect(self, retry_count: int = WIFI_RETRY):
         self.__init__(retry_count)
 
+    def scan(self) -> {}:
+        return {
+            # key: ssid, value: ssid, bssid, channel, RSSI, auth_mode, hidden
+            found[0]: found
+            for found in self._wlan.scan()
+        }
+
 
 class EspNow:
+    """Synchronous ESPNow"""
     _esp_now: espnow.ESPNow
     mac_address: bytes
 
@@ -62,7 +70,7 @@ class EspNow:
         for p in peers:
             self._esp_now.del_peer(p)
 
-    def send(self, message, peers: [bytes] = None, sync: bool = True) -> {}:
+    def send(self, message, peers: [bytes], sync: bool = True) -> {}:
         sent = {}
         for p in peers:
             try:
@@ -80,3 +88,39 @@ class EspNow:
             if message:
                 received.setdefault(mac, []).append(message)
         return received
+
+
+class AioEspNow:
+    """Asynchronous ESPNow"""
+    _esp_now: aioespnow.AIOESPNow
+    mac_address: bytes
+
+    def __init__(self):
+        # network config
+        wlan = network.WLAN(network.STA_IF)
+        wlan.active(True)
+        # mac config
+        self.mac_address = wlan.config('mac')
+        # esp now config
+        self._esp_now = aioespnow.AIOESPNow()
+        self._esp_now.active(True)
+
+    def register_peers(self, peers: [bytes]):
+        [self._esp_now.add_peer(p) for p in peers]
+
+    def remove_peers(self, peers: [bytes]):
+        [self._esp_now.del_peer(p) for p in peers]
+
+    async def send(self, message, peers: [bytes]) -> {}:
+        sent = {}
+        for p in peers:
+            try:
+                sent[p] = await self._esp_now.asend(p, message)
+            except OSError as e:
+                print(f'received OSError when sending message to peer (mac: {p}): {e}')
+        return sent
+
+    async def receive(self) -> {}:
+        # return received
+        mac, message = await self._esp_now.arecv()
+        return {mac: message}

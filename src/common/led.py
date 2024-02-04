@@ -12,18 +12,22 @@ LED_SLEEP = 0.5     # [s]
 
 class Led:
     _led: Pin
+    on_value: int
+    off_value: int
 
-    def __init__(self, pin: int):
+    def __init__(self, pin: int, on_value: int = LED_ON, off_value: int = LED_OFF):
         self._led = Pin(pin, Pin.OUT)
+        self.on_value = on_value
+        self.off_value = off_value
 
     def turn_on(self, keep_on: float = None):
-        self._led.value(LED_ON)
+        self._led.value(self.on_value)
         if keep_on:
             sleep(keep_on)
             self.turn_off()
 
     def turn_off(self, keep_off: float = None):
-        self._led.value(LED_OFF)
+        self._led.value(self.off_value)
         if keep_off:
             sleep(keep_off)
             self.turn_on()
