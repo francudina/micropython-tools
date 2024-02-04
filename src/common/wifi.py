@@ -63,12 +63,10 @@ class EspNow:
         self._esp_now.active(True)
 
     def register_peers(self, peers: [bytes]):
-        for p in peers:
-            self._esp_now.add_peer(p)
+        [self._esp_now.add_peer(p) for p in peers]
 
     def remove_peers(self, peers: [bytes]):
-        for p in peers:
-            self._esp_now.del_peer(p)
+        [self._esp_now.del_peer(p) for p in peers]
 
     def send(self, message, peers: [bytes], sync: bool = True) -> {}:
         sent = {}
