@@ -20,7 +20,7 @@ led = Led(pin=8, on_value=0, off_value=1)
 led.blink(count=3, between=0.3)
 
 
-async def send_info(esp_now, receivers: [], api_freq: float):
+async def send_info(esp_now, api_freq: float):
     url = 'https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m'
     Memory.enable_gc(enable=True)
     while True:
@@ -48,7 +48,7 @@ async def send_info(esp_now, receivers: [], api_freq: float):
 
 
 async def main(timeout: float, api_freq: float):
-    asyncio.create_task(send_info(esp_now=e, receivers=peers, api_freq=api_freq))
+    asyncio.create_task(send_info(esp_now=e, api_freq=api_freq))
     while True:
         await asyncio.sleep(timeout)
 

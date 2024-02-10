@@ -38,3 +38,6 @@ class PubSubClient:
     def check_message(self) -> str:
         # nonblocking check
         return self._client.check_msg()
+
+    def get_client_id(self):
+        return self._client_id
