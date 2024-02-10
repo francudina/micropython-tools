@@ -6,6 +6,7 @@ from utime import sleep
 from src.common.device import Memory
 from src.common.led import Led
 from src.common.pub_sub import PubSubClient
+from src.common.sensors import DHT22
 from src.common.wifi import WiFi
 
 
