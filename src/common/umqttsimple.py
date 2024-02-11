@@ -17,6 +17,10 @@ class MQTTException(Exception):
 
 
 class MQTTClient:
+    """
+    Implementation used from micropython official page:
+    https://github.com/micropython/micropython-lib/blob/master/micropython/umqtt.simple/umqtt/simple.py
+    """
 
     def __init__(self,
                  client_id,
